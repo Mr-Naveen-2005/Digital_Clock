@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="eng">
+ <head>
+    <title>Clock</title>
+   <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    color: #fff;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    padding: 40px 30px;
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    border-radius: 20px;
+    z-index: -1;
+    transition: opacity 0.4s;
+}
+
+.panel:hover::before {
+    opacity: 0.7;
+}
+
+.panel:hover {
+    transform: translateY(-10px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.2),
+        0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.time {
+    font-size: 4 rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        0 0 20px rgba(100, 200, 255, 0.6),
+        0 0 40px rgba(100, 150, 255, 0.4);
+    letter-spacing: 2px;
+    margin: 0;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    from { text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(100,200,255,0.6); }
+    to { text-shadow: 0 0 20px rgba(255,255,255,1), 0 0 40px rgba(100,200,255,0.8), 0 0 60px rgba(100,150,255,0.5); }
+}
+
+/* Optional: Add date below time */
+.date {
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .time {
+        font-size: 3rem;
+    }
+    .panel {
+        padding: 30px 20px;
+    }
+}
+   </style>     
+
+    </head>
+
+    <body>
+        <div class="panel">
+            
+            <h1 id="time" class="time"> 00:00:00 am</h1>
+            <h1 id="date" class="time">00/00/0000  day </h1>
+
+        </div>
+        <script>
+            
+function updatedate(){
+    const now=new Date(); 
+ 
+    let hour=now.getHours();
+    let min=now.getMinutes();
+    let sec=now.getSeconds();
+    let da=now.getDate();
+    let mo=now.getMonth();
+    let ye=now.getFullYear();
+    let ampm;
+    let y=now.getDay();
+
+    if (sec<10){
+        sec='0'+sec;
+    }
+    if(min<10){
+        min='0'+min;
+    }
+    if (mo<10){
+        mo=mo+1;
+        mo='0'+mo;
+    }
+
+  
+    if(hour>12){
+        ampm="PM";
+        hour=hour%12;
+        hour='0'+hour;
+    }
+    else if(hour==12){
+        ampm="PM";
+    }
+   else {
+        ampm='AM';
+    }
+
+    let days=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+    let f =days[y-1];
+    const  timestring = `${hour}:${min}:${sec} ${ampm}`;
+    const  datestring=`${da}/${mo}/${ye} ${f}`;
+    document.getElementById('date').innerText=datestring;
+    document.getElementById('time').innerText= timestring;
+}
+
+setInterval(updatedate,1000);
+updatedate();
+        </script>
+    </body>  
+
+</html> 
